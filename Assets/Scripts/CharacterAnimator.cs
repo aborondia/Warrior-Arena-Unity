@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
 {
+  public string NextAction;
   protected float attackTime;
   protected float specialTime;
   protected float moveForwardTime;
@@ -12,19 +13,69 @@ public class CharacterAnimator : MonoBehaviour
 
   protected AnimationClip clip;
   [SerializeField] CharacterAnimator enemyAnimator;
+  [SerializeField] CharacterMover enemyMover;
   protected Animator animator;
   protected CharacterStateHandler _characterStateHandler;
   protected SpriteRenderer _spriteRenderer;
+
+  public void ReturnToIdle()
+  {
+    animator.SetBool("isDefending", true);
+    //if <50% HP Idle injured
+    //initialize enemy action
+  }
+
   public void Attack()
   {
     animator.SetBool("regularAttack", true);
-    animator.SetTrigger("moveForward");
+
+    if (enemyMover.transform.position == enemyMover.basePosition)
+    {
+      animator.SetTrigger("moveForward");
+    }
+    else
+    {
+      animator.SetTrigger("attack");
+    }
   }
 
   public void SpecialAttack()
   {
     animator.SetBool("regularAttack", false);
-    animator.SetTrigger("moveForward");
+
+    if (enemyMover.transform.position == enemyMover.basePosition)
+    {
+      animator.SetTrigger("moveForward");
+    }
+    else
+    {
+      animator.SetTrigger("attack");
+    }
+  }
+
+  public void Defend()
+  {
+    animator.SetBool("isDefending", true);
+  }
+
+  public void DeliverDamage()
+  {
+    enemyAnimator.TakeDamage();
+  }
+
+  public void TakeDamage()
+  {
+    //take damage
+    if (!animator.GetBool("isDefending"))
+    {
+      animator.Play("Flinch");
+      // animator.SetTrigger("takeDamage");
+    }
+
+    if (characterMover.transform.position != characterMover.basePosition)
+    {
+      animator.SetBool("movingBackward", true);
+    }
   }
 
   public void MoveForward()
@@ -39,22 +90,45 @@ public class CharacterAnimator : MonoBehaviour
 
   public void PauseAnimation()
   {
-    animator.SetBool("animationNotPaused", false);
+    animator.SetBool("animationPaused", true);
   }
 
   public void UnPauseAnimation()
   {
-    animator.SetBool("animationNotPaused", true);
+    animator.SetBool("animationPaused", false);
   }
 
   public void TriggerEnemyAction()
   {
-    enemyAnimator.Attack();
+    enemyAnimator.PerformNextAction();
   }
 
+  public void PerformNextAction()
+  {
+    if (_characterStateHandler.IsDead)
+    {
+      NextAction = "Dead";
+    }
+
+    switch (NextAction)
+    {
+      case "Attack":
+        Attack();
+        break;
+      case "SpecialAttack":
+        SpecialAttack();
+        break;
+      // case "Dead": TriggerEnd()
+      // break;
+      default:
+        UnPauseAnimation();
+        break;
+    }
+  }
   public void UpdateAnimClipTimes()
   {
     AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+
     foreach (AnimationClip clip in clips)
     {
       switch (clip.name)

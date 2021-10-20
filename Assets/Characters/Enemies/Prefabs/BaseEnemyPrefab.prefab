@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 9023965120929980430}
   - component: {fileID: 3568692558563970567}
   - component: {fileID: 5246855614959620581}
-  - component: {fileID: 1704953289}
   - component: {fileID: 1704953293}
+  - component: {fileID: 1375689196}
   m_Layer: 0
   m_Name: BaseEnemyPrefab
   m_TagString: Untagged
@@ -104,19 +104,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1704953289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1088333544591019355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2358beb8e39547d4fab049bcdbeee59a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Meliadul
 --- !u!114 &1704953293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,3 +117,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   regularAttack: 0
+--- !u!114 &1375689196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088333544591019355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2358beb8e39547d4fab049bcdbeee59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyAnimator: {fileID: 0}
+  Name: Meliadul

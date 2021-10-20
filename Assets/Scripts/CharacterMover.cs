@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class CharacterMover : MonoBehaviour
 {
-  [SerializeField] private Vector3 basePosition = new Vector3(-5.12f, -0.994f, 0);
+  [SerializeField] public Vector3 basePosition = new Vector3(-5.12f, -0.994f, 0);
   [SerializeField] private Vector3 attackPosition = new Vector3(5.78f, -0.994f, 0);
+  [SerializeField] private GameObject enemyMover;
+  [SerializeField] private Vector3 movePositionAdjustment;
   float t;
   Vector3 startPosition;
   Vector3 target;
@@ -24,6 +26,14 @@ public class CharacterMover : MonoBehaviour
     t = 0;
     startPosition = transform.position;
     timeToReachTarget = time;
-    target = moveForward ? attackPosition : basePosition;
+    if (moveForward)
+    {
+      target = enemyMover.transform.position - movePositionAdjustment;
+    }
+    else
+    {
+      target = basePosition;
+    }
+
   }
 }

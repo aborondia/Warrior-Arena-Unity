@@ -10,6 +10,7 @@ public class PlayerAnimator : CharacterAnimator
     _spriteRenderer = GetComponent<SpriteRenderer>();
     _characterStateHandler = GetComponent<CharacterStateHandler>();
     characterMover = transform.parent.GetComponent<CharacterMover>();
+    UnPauseAnimation();
     UpdateAnimClipTimes();
   }
 }

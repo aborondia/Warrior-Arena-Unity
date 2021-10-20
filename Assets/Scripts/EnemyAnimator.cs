@@ -14,12 +14,14 @@ public class EnemyAnimator : CharacterAnimator
     _characterStateHandler = GetComponent<CharacterStateHandler>();
     characterMover = transform.parent.GetComponent<CharacterMover>();
     _sprites = Resources.LoadAll<Sprite>(Name);
+    UnPauseAnimation();
+    NextAction = "Attack";
     UpdateAnimClipTimes();
   }
 
   void LateUpdate()
   {
-    int index = int.Parse(_spriteRenderer.sprite.name.Replace("Elicia_", ""));
+    int index = int.Parse(_spriteRenderer.sprite.name.Replace("Adela_", ""));
     _spriteRenderer.sprite = _sprites[index];
   }
 }
