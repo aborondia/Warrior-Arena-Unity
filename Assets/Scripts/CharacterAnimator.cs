@@ -18,9 +18,17 @@ public class CharacterAnimator : MonoBehaviour
   protected CharacterStateHandler _characterStateHandler;
   protected SpriteRenderer _spriteRenderer;
 
+  public void Update()
+  {
+    if (string.IsNullOrEmpty(enemyAnimator.NextAction))
+    {
+      UnPauseAnimation();
+    }
+  }
+
   public void ReturnToIdle()
   {
-    animator.SetBool("isDefending", true);
+    animator.SetBool("isDefending", false);
     //if <50% HP Idle injured
     //initialize enemy action
   }
@@ -51,6 +59,15 @@ public class CharacterAnimator : MonoBehaviour
     {
       animator.SetTrigger("attack");
     }
+
+    if (characterMover.transform.position == characterMover.basePosition)
+    {
+      animator.SetBool("movingBackward", false);
+    }
+    else
+    {
+      animator.SetBool("movingBackward", true);
+    }
   }
 
   public void Defend()
@@ -63,13 +80,22 @@ public class CharacterAnimator : MonoBehaviour
     enemyAnimator.TakeDamage();
   }
 
+  public IEnumerator Wait(float seconds)
+  {
+    yield return new WaitForSeconds(seconds);
+
+  }
+
   public void TakeDamage()
   {
     //take damage
     if (!animator.GetBool("isDefending"))
     {
       animator.Play("Flinch");
-      // animator.SetTrigger("takeDamage");
+    }
+    else
+    {
+      enemyAnimator.UnPauseAnimation();
     }
 
     if (characterMover.transform.position != characterMover.basePosition)
@@ -115,8 +141,12 @@ public class CharacterAnimator : MonoBehaviour
       case "Attack":
         Attack();
         break;
-      case "SpecialAttack":
+      case "Special":
         SpecialAttack();
+        break;
+      case "Defend":
+        // Defend();
+        Attack();
         break;
       // case "Dead": TriggerEnd()
       // break;

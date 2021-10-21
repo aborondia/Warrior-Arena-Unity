@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class EnemyAnimator : CharacterAnimator
 {
-  [SerializeField] private string Name;
+  [SerializeField] public string Name;
   private Sprite[] _sprites;
+  private EnemyActionHandler enemyActionHandler;
 
   void Start()
   {
@@ -13,15 +14,17 @@ public class EnemyAnimator : CharacterAnimator
     _spriteRenderer = GetComponent<SpriteRenderer>();
     _characterStateHandler = GetComponent<CharacterStateHandler>();
     characterMover = transform.parent.GetComponent<CharacterMover>();
+    enemyActionHandler = GetComponent<EnemyActionHandler>();
     _sprites = Resources.LoadAll<Sprite>(Name);
+    NextAction = "None";
     UnPauseAnimation();
-    NextAction = "Attack";
     UpdateAnimClipTimes();
   }
 
   void LateUpdate()
   {
-    int index = int.Parse(_spriteRenderer.sprite.name.Replace("Adela_", ""));
+    int index;
+    int.TryParse(_spriteRenderer.sprite.name.Replace("Adela_", ""), out index);
     _spriteRenderer.sprite = _sprites[index];
   }
 }

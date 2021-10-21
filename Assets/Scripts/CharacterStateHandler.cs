@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CharacterStateHandler : MonoBehaviour
 {
-  public bool regularAttack;
   [SerializeField] public int Health = 50;
   public bool IsInjured
   {
