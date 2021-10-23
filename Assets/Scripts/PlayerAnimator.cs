@@ -4,13 +4,31 @@ using UnityEngine;
 
 public class PlayerAnimator : CharacterAnimator
 {
+  public ActionHandler.Action ChosenAction;
+  [SerializeField] ActionHandler actionHandler;
   void Start()
   {
     animator = GetComponent<Animator>();
     _spriteRenderer = GetComponent<SpriteRenderer>();
-    _characterStateHandler = GetComponent<CharacterStateHandler>();
     characterMover = transform.parent.GetComponent<CharacterMover>();
-    UnPauseAnimation();
     UpdateAnimClipTimes();
+  }
+
+  public void SetActionToAttack()
+  {
+    ChosenAction = ActionHandler.Action.Attack;
+    actionHandler.StartRound();
+  }
+
+  public void SetActionToSpecial()
+  {
+    ChosenAction = ActionHandler.Action.Special;
+    actionHandler.StartRound();
+  }
+
+  public void SetActionToDefend()
+  {
+    ChosenAction = ActionHandler.Action.Defend;
+    actionHandler.StartRound();
   }
 }

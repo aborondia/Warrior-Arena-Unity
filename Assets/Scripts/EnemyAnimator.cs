@@ -12,12 +12,10 @@ public class EnemyAnimator : CharacterAnimator
   {
     animator = GetComponent<Animator>();
     _spriteRenderer = GetComponent<SpriteRenderer>();
-    _characterStateHandler = GetComponent<CharacterStateHandler>();
     characterMover = transform.parent.GetComponent<CharacterMover>();
     enemyActionHandler = GetComponent<EnemyActionHandler>();
     _sprites = Resources.LoadAll<Sprite>(Name);
-    NextAction = "None";
-    UnPauseAnimation();
+    NextAction = ActionHandler.Action.Attack;
     UpdateAnimClipTimes();
   }
 
@@ -26,5 +24,9 @@ public class EnemyAnimator : CharacterAnimator
     int index;
     int.TryParse(_spriteRenderer.sprite.name.Replace("Adela_", ""), out index);
     _spriteRenderer.sprite = _sprites[index];
+  }
+
+  public void GetNextAction(){
+    //more
   }
 }

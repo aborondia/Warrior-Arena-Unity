@@ -269,7 +269,6 @@ GameObject:
   - component: {fileID: 59366894}
   - component: {fileID: 59366893}
   - component: {fileID: 59366892}
-  - component: {fileID: 59366891}
   m_Layer: 5
   m_Name: EnemyDefendButton
   m_TagString: Untagged
@@ -297,18 +296,6 @@ RectTransform:
   m_AnchoredPosition: {x: -160, y: -56.3}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &59366891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 59366889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fad2a5cc6cfe740a07a0b98ef0a163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &59366892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +395,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 74249191, guid: 957275767dd443a458a8c6d574f3a06a, type: 3}
   m_PrefabInstance: {fileID: 5861675942815128389}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 742215523}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5aedc2f98453f442805d988cfca22f6, type: 3}
@@ -431,7 +418,6 @@ GameObject:
   - component: {fileID: 74709322}
   - component: {fileID: 74709321}
   - component: {fileID: 74709320}
-  - component: {fileID: 74709319}
   m_Layer: 5
   m_Name: SpecialAttackButton
   m_TagString: Untagged
@@ -459,18 +445,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -28.2}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &74709319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 74709317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fad2a5cc6cfe740a07a0b98ef0a163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &74709320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,8 +490,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 74249191}
-        m_TargetAssemblyTypeName: CharacterAnimator, Assembly-CSharp
-        m_MethodName: SpecialAttack
+        m_TargetAssemblyTypeName: PlayerAnimator, Assembly-CSharp
+        m_MethodName: SetActionToSpecial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -711,7 +685,6 @@ GameObject:
   - component: {fileID: 461783699}
   - component: {fileID: 461783698}
   - component: {fileID: 461783697}
-  - component: {fileID: 461783696}
   m_Layer: 5
   m_Name: DefendButton
   m_TagString: Untagged
@@ -739,18 +712,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -56.3}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &461783696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 461783694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fad2a5cc6cfe740a07a0b98ef0a163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &461783697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -796,8 +757,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 74249191}
-        m_TargetAssemblyTypeName: CharacterAnimator, Assembly-CSharp
-        m_MethodName: Defend
+        m_TargetAssemblyTypeName: PlayerAnimator, Assembly-CSharp
+        m_MethodName: SetActionToDefend
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -807,6 +768,18 @@ MonoBehaviour:
           m_StringArgument: Attack()
           m_BoolArgument: 0
         m_CallState: 1
+      - m_Target: {fileID: 742215523}
+        m_TargetAssemblyTypeName: PlayerAnimator, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &461783698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -928,6 +901,69 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &633615958
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 633615960}
+  - component: {fileID: 633615959}
+  m_Layer: 0
+  m_Name: ActionHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &633615959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633615958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee77201f05c63ac438149ad076e55d2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimator: {fileID: 74249191}
+  enemyAnimator: {fileID: 1375689196}
+  playerStateHandler: {fileID: 742215524}
+  enemyStateHandler: {fileID: 1375689192}
+--- !u!4 &633615960
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633615958}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.24217555, y: -0.23839808, z: -0.98630553}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &742215523 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5861675942492928755, guid: 957275767dd443a458a8c6d574f3a06a, type: 3}
+  m_PrefabInstance: {fileID: 5861675942815128389}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &742215524 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 413156690, guid: 957275767dd443a458a8c6d574f3a06a, type: 3}
+  m_PrefabInstance: {fileID: 5861675942815128389}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742215523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a85d2cedeac75e46b110d788657b337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &772351169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,7 +1244,6 @@ GameObject:
   - component: {fileID: 914834384}
   - component: {fileID: 914834383}
   - component: {fileID: 914834382}
-  - component: {fileID: 914834381}
   m_Layer: 5
   m_Name: EnemyAttackButton
   m_TagString: Untagged
@@ -1236,18 +1271,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 1, y: 1}
---- !u!114 &914834381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 914834379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fad2a5cc6cfe740a07a0b98ef0a163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &914834382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1534,6 +1557,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1088333544591019355, guid: b27b53f462f53e6478df0a373a995409, type: 3}
   m_PrefabInstance: {fileID: 1481937578}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1375689192 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1704953293, guid: b27b53f462f53e6478df0a373a995409, type: 3}
+  m_PrefabInstance: {fileID: 1481937578}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375689191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a85d2cedeac75e46b110d788657b337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1375689195 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9023965120929980430, guid: b27b53f462f53e6478df0a373a995409, type: 3}
@@ -1708,7 +1742,6 @@ GameObject:
   - component: {fileID: 1474493200}
   - component: {fileID: 1474493199}
   - component: {fileID: 1474493198}
-  - component: {fileID: 1474493201}
   m_Layer: 5
   m_Name: AttackButton
   m_TagString: Untagged
@@ -1781,8 +1814,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 74249191}
-        m_TargetAssemblyTypeName: CharacterAnimator, Assembly-CSharp
-        m_MethodName: Attack
+        m_TargetAssemblyTypeName: PlayerAnimator, Assembly-CSharp
+        m_MethodName: SetActionToAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1830,18 +1863,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474493196}
   m_CullTransparentMesh: 1
---- !u!114 &1474493201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474493196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fad2a5cc6cfe740a07a0b98ef0a163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1481937578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1859,6 +1880,10 @@ PrefabInstance:
       objectReference: {fileID: 1551054885}
     - target: {fileID: 1375689196, guid: b27b53f462f53e6478df0a373a995409, type: 3}
       propertyPath: enemyAnimator
+      value: 
+      objectReference: {fileID: 74249191}
+    - target: {fileID: 1375689196, guid: b27b53f462f53e6478df0a373a995409, type: 3}
+      propertyPath: enemyCharacterAnimator
       value: 
       objectReference: {fileID: 74249191}
     - target: {fileID: 1088333544591019355, guid: b27b53f462f53e6478df0a373a995409, type: 3}
@@ -2023,7 +2048,6 @@ GameObject:
   - component: {fileID: 1772318528}
   - component: {fileID: 1772318527}
   - component: {fileID: 1772318526}
-  - component: {fileID: 1772318525}
   m_Layer: 5
   m_Name: EnemySpecialAttackButton
   m_TagString: Untagged
@@ -2051,18 +2075,6 @@ RectTransform:
   m_AnchoredPosition: {x: -160, y: -28.34}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &1772318525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1772318523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fad2a5cc6cfe740a07a0b98ef0a163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1772318526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2369,7 +2381,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1610022957}
     - target: {fileID: 74249191, guid: 957275767dd443a458a8c6d574f3a06a, type: 3}
+      propertyPath: actionHandler
+      value: 
+      objectReference: {fileID: 633615959}
+    - target: {fileID: 74249191, guid: 957275767dd443a458a8c6d574f3a06a, type: 3}
       propertyPath: enemyAnimator
+      value: 
+      objectReference: {fileID: 1375689196}
+    - target: {fileID: 74249191, guid: 957275767dd443a458a8c6d574f3a06a, type: 3}
+      propertyPath: enemyStateHandler
+      value: 
+      objectReference: {fileID: 1375689192}
+    - target: {fileID: 74249191, guid: 957275767dd443a458a8c6d574f3a06a, type: 3}
+      propertyPath: enemyCharacterAnimator
       value: 
       objectReference: {fileID: 1375689196}
     - target: {fileID: 5861675942492928755, guid: 957275767dd443a458a8c6d574f3a06a, type: 3}

@@ -6,41 +6,36 @@ using UnityEngine;
 
 public class EnemyActionHandler : MonoBehaviour
 {
-  public enum ActionType
-  {
-    Attack,
-    Special,
-    Defend,
-    None
-  }
-  private Dictionary<ActionType, List<string>> actions;
+  private Dictionary<ActionHandler.Action, List<string>> actions;
+  private Animator animator;
   private CharacterAnimator characterAnimator;
 
   public void Start()
   {
     characterAnimator = GetComponent<CharacterAnimator>();
+    animator = GetComponent<Animator>();
     actions = GetActions();
   }
 
-  public Dictionary<ActionType, List<string>> GetActions()
+  public Dictionary<ActionHandler.Action, List<string>> GetActions()
   {
     string name = GetComponentInParent<EnemyAnimator>().Name;
-    Dictionary<ActionType, List<string>> actions = null;
+    Dictionary<ActionHandler.Action, List<string>> actions = null;
 
     switch (name)
     {
       case "Elicia":
-        actions = new Dictionary<ActionType, List<string>>
+        actions = new Dictionary<ActionHandler.Action, List<string>>
         {
-          [ActionType.Attack] = new List<string>
+          [ActionHandler.Action.Attack] = new List<string>
           {
 "I'm going to attack you."
           },
-          [ActionType.Special] = new List<string>
+          [ActionHandler.Action.Special] = new List<string>
           {
 "I'm going all out."
           },
-          [ActionType.Defend] = new List<string>
+          [ActionHandler.Action.Defend] = new List<string>
           {
 "I'm going to defend."
           },
@@ -53,45 +48,50 @@ public class EnemyActionHandler : MonoBehaviour
 
   public void GetNextAction()
   {
-    int attackChance = actions.Where(a => a.Key == ActionType.Attack).Count() - 1;
-    int specialChance = actions.Where(a => a.Key == ActionType.Special).Count() + attackChance;
-    int defendChance = actions.Where(a => a.Key == ActionType.Defend).Count() + specialChance;
+    int attackChance = actions.Where(a => a.Key == ActionHandler.Action.Attack).Count() - 1;
+    int specialChance = actions.Where(a => a.Key == ActionHandler.Action.Special).Count() + attackChance;
+    int defendChance = actions.Where(a => a.Key == ActionHandler.Action.Defend).Count() + specialChance;
     int actionCount = actions.Values.Sum(v => v.Count());
     int nextActionNumber = UnityEngine.Random.Range(0, actionCount);
-    ActionType nextAction = ActionType.None;
+    ActionHandler.Action nextAction = ActionHandler.Action.None;
 
     SayBattleQuote(nextAction);
 
     if (nextActionNumber <= attackChance)
     {
-      nextAction = ActionType.Attack;
-      characterAnimator.NextAction = "Attack";
+      nextAction = ActionHandler.Action.Attack;
+      characterAnimator.NextAction = ActionHandler.Action.Attack;
       return;
     }
 
     if (nextActionNumber <= specialChance)
     {
-      nextAction = ActionType.Special;
-      characterAnimator.NextAction = "Special";
+      nextAction = ActionHandler.Action.Special;
+      characterAnimator.NextAction = ActionHandler.Action.Special;
       return;
     }
 
     if (nextActionNumber <= defendChance)
     {
-      nextAction = ActionType.Defend;
-      characterAnimator.NextAction = "Defend";
+      nextAction = ActionHandler.Action.Defend;
+      characterAnimator.NextAction = ActionHandler.Action.Defend;
       return;
     }
 
-    characterAnimator.NextAction = "None";
+    characterAnimator.NextAction = ActionHandler.Action.None;
   }
 
   public void ClearAction()
   {
-    characterAnimator.NextAction = "None";
+    characterAnimator.NextAction = ActionHandler.Action.None;
   }
 
-  public void SayBattleQuote(ActionType action)
+  public void StopDefending()
+  {
+    animator.SetBool("isDefending", false);
+  }
+
+  public void SayBattleQuote(ActionHandler.Action action)
   {
     var quotes = actions.Where(a => a.Key == action);
 
