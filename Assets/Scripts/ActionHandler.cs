@@ -9,7 +9,9 @@ public class ActionHandler : MonoBehaviour
   {
     Attack,
     Special,
-    ToBeDetermined,
+    ToBeDeterminedAttack,
+    ToBeDeterminedIdle,
+    ToBeDeterminedTakeDamage,
     Defend,
     MoveForward,
     MoveBackward,
@@ -20,11 +22,18 @@ public class ActionHandler : MonoBehaviour
   [SerializeField] EnemyAnimator enemyAnimator;
   [SerializeField] CharacterStateHandler playerStateHandler;
   [SerializeField] CharacterStateHandler enemyStateHandler;
-  private Action chosenAction
+  private Action playerChosenAction
   {
     get
     {
       return playerAnimator.ChosenAction;
+    }
+  }
+  private Action enemyChosenAction
+  {
+    get
+    {
+      return enemyAnimator.ChosenAction;
     }
   }
   private bool startNewRound = false;
@@ -41,56 +50,28 @@ public class ActionHandler : MonoBehaviour
 
 
 
-  public Dictionary<string, List<Action>> AttackVsAttackSequence = new Dictionary<string, List<Action>>
+  public Dictionary<string, List<Action>> NonDesiciveRoundSequence = new Dictionary<string, List<Action>>
   {
     ["Player"] = new List<Action>{
 Action.MoveForward,
-Action.Attack,
-Action.None,
-Action.Flinch,
-Action.None,
+Action.ToBeDeterminedAttack,
+Action.ToBeDeterminedIdle,
+Action.ToBeDeterminedTakeDamage,
+Action.ToBeDeterminedIdle,
 Action.MoveBackward,
 Action.None,
 },
     ["Enemy"] = new List<Action>{
+Action.ToBeDeterminedIdle,
+Action.ToBeDeterminedTakeDamage,
 Action.None,
-Action.Flinch,
-Action.None,
-Action.Attack,
+Action.ToBeDeterminedAttack,
 Action.None,
 Action.None,
 Action.None,
 }
   };
-  public Dictionary<string, List<Action>> SpecialVsAttackSequence = new Dictionary<string, List<Action>>
-  {
-    ["Player"] = new List<Action>{
-Action.MoveForward,
-Action.Special,
-Action.None,
-Action.Flinch,
-Action.None,
-Action.MoveBackward,
-Action.None,
-},
-    ["Enemy"] = new List<Action>{
-Action.None,
-Action.Flinch,
-Action.None,
-Action.Attack,
-Action.None,
-Action.None,
-Action.None,
-}
-  };
-
-  // Start is called before the first frame update
-  void Start()
-  {
-
-  }
-
-  // Update is called once per frame
+  //add fight ending sequences
   void Update()
   {
     if (startNewRound == true)
@@ -116,42 +97,19 @@ Action.None,
 
   public void SetRoundSequence()
   {
-    switch (playerAnimator.ChosenAction)
+    //set up damage function and refactor to integrate into victory
+    string fightVictor = GetRoundVictor();
+
+    switch (fightVictor)
     {
-      case Action.Attack:
-        switch (enemyAnimator.NextAction)
-        {
-          case Action.Attack:
-            AttackVsAttack();
-            break;
-          case Action.Special:
-            AttackVsAttack();
-            break;
-          case Action.Defend: break;
-        }
+      case "":
+        SetNonDecisiveFightSequence();
         break;
-
-      case Action.Special:
-        switch (enemyAnimator.NextAction)
-        {
-          case Action.Attack:
-            AttackVsAttack();
-            break;
-          case Action.Special:
-            AttackVsAttack();
-            break;
-          case Action.Defend: break;
-        }
+      case "player":
+        SetPlayerWinSequence();
         break;
-
-      case Action.Defend:
-        switch (enemyAnimator.NextAction)
-        {
-          case Action.Attack:
-            break;
-          case Action.Special: break;
-          case Action.Defend: break;
-        }
+      case "enemy":
+        SetEnemyWinSequence();
         break;
     }
   }
@@ -170,62 +128,88 @@ Action.None,
     enemyAnimator.NextAction = currentSequence["Enemy"][currentSequenceIndex];
     currentSequenceIndex++;
 
-    switch (playerAnimator.NextAction)
-    {
-      case Action.Attack:
-        playerAnimator.Attack();
-        break;
-      case Action.Special:
-        playerAnimator.Special();
-        break;
-      case Action.Defend:
-        playerAnimator.Defend();
-        break;
-      case Action.MoveForward:
-        playerAnimator.MoveForward();
-        break;
-      case Action.MoveBackward:
-        playerAnimator.MoveBackward();
-        break;
-      case Action.Flinch:
-        playerAnimator.Flinch();
-        break;
-      case Action.None:
-        playerAnimator.Idle();
-        break;
-    }
+    SignalNextAction(playerAnimator);
+    SignalNextAction(enemyAnimator);
+  }
 
-    switch (enemyAnimator.NextAction)
+  public void SignalNextAction(CharacterAnimator characterAnimator)
+  {
+    var chosenAction = characterAnimator.GetType() == typeof(PlayerAnimator) ? playerChosenAction : enemyChosenAction;
+
+    switch (characterAnimator.NextAction)
     {
-      case Action.Attack:
-        enemyAnimator.Attack();
-        break;
-      case Action.Special:
-        enemyAnimator.Special();
-        break;
-      case Action.Defend:
-        enemyAnimator.Defend();
+      case Action.None:
+        characterAnimator.Idle();
         break;
       case Action.MoveForward:
-        enemyAnimator.MoveForward();
+        characterAnimator.MoveForward();
         break;
+
       case Action.MoveBackward:
-        enemyAnimator.MoveBackward();
+        characterAnimator.MoveBackward();
         break;
-      case Action.Flinch:
-        enemyAnimator.Flinch();
+
+      case Action.ToBeDeterminedAttack:
+        if (chosenAction == Action.Attack)
+        {
+          characterAnimator.Attack();
+        }
+        else
+        {
+          characterAnimator.Special();
+        }
         break;
-      case Action.None:
-        enemyAnimator.Idle();
+
+      case Action.ToBeDeterminedIdle:
+        if (chosenAction == Action.None)
+        {
+          characterAnimator.Idle();
+        }
+        else
+        {
+          characterAnimator.Defend();
+        }
+        break;
+
+      case Action.ToBeDeterminedTakeDamage:
+        if (chosenAction == Action.Defend)
+        {
+          characterAnimator.Defend();
+        }
+        else
+        {
+          characterAnimator.Flinch();
+        }
         break;
     }
   }
 
-  public void AttackVsAttack(int currentAction = 0)
+  public string GetRoundVictor()
   {
-    // var playerActionToSet = AttackVsAttackSequence["Player"].Select(action => action == Action.ToBeDetermined);
-    //deal damage
-    //Add check for death
-    currentSequence = AttackVsAttackSequence;
+    if (playerStateHandler.Health <= 0)
+    {
+      return "enemy";
+    }
+    if (enemyStateHandler.Health <= 0)
+    {
+      return "player";
+    }
+
+    return "";
+  }
+
+  public void SetNonDecisiveFightSequence(int currentAction = 0)
+  {
+    currentSequence = NonDesiciveRoundSequence;
+  }
+
+  public void SetPlayerWinSequence()
+  {
+
+  }
+
+  public void SetEnemyWinSequence()
+  {
+
   }
 }

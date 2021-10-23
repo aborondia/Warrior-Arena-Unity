@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class CharacterAnimator : MonoBehaviour
 {
+  public ActionHandler.Action ChosenAction;
   public bool performingAction = false;
   public ActionHandler.Action NextAction;
   protected float attackTime;

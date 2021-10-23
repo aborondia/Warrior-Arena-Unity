@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimator : CharacterAnimator
 {
-  public ActionHandler.Action ChosenAction;
+ 
   [SerializeField] ActionHandler actionHandler;
   void Start()
   {
