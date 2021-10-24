@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class CharacterMover : MonoBehaviour
 {
-  [SerializeField] public Vector3 basePosition = new Vector3(-5.12f, -0.994f, 0);
-  [SerializeField] private Vector3 attackPosition = new Vector3(5.78f, -0.994f, 0);
-  [SerializeField] private GameObject enemyMover;
+  Vector3 basePlayerPosition = new Vector3(-5.12f, -0.994f, 0);
+  Vector3 playerEvadePosition = new Vector3(-7.12f, -0.994f, 0);
+  Vector3 baseEnemyPosition = new Vector3(6.44f, -0.994f, 0);
+  Vector3 enemyEvadePosition = new Vector3(8.44f, -0.994f, 0);
+  [SerializeField] private GameObject enemyCharacterMover;
   [SerializeField] private Vector3 movePositionAdjustment;
   float t;
   Vector3 startPosition;
@@ -21,19 +23,22 @@ public class CharacterMover : MonoBehaviour
     t += Time.deltaTime / timeToReachTarget;
     transform.position = Vector3.Lerp(startPosition, target, t);
   }
-  public void SetDestination(bool moveForward, float time)
+  public void SetDestination(bool isPlayerCharacter, bool moveForward, float time, bool countering = false)
   {
+    Vector3 basePosition = isPlayerCharacter ? basePlayerPosition : baseEnemyPosition;
+    Vector3 counterPosition = isPlayerCharacter ? playerEvadePosition : enemyEvadePosition;
+
     t = 0;
     startPosition = transform.position;
     timeToReachTarget = time;
+    
     if (moveForward)
     {
-      target = enemyMover.transform.position - movePositionAdjustment;
+      target = countering ? basePosition : enemyCharacterMover.transform.position - movePositionAdjustment;
     }
     else
     {
-      target = basePosition;
+      target = countering ? counterPosition : basePosition;
     }
-
   }
 }

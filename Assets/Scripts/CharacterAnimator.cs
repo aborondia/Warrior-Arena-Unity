@@ -11,19 +11,14 @@ public abstract class CharacterAnimator : MonoBehaviour
   protected float specialTime;
   protected float moveForwardTime;
   protected float moveBackwardTime;
+  protected float evadeTime;
+  protected float counterTime;
+  protected float dashAttackTime;
   protected CharacterMover characterMover;
 
   protected AnimationClip clip;
   protected Animator animator;
   protected SpriteRenderer _spriteRenderer;
-
-  public void Update()
-  {
-    // if (string.IsNullOrEmpty(enemyCharacterAnimator.NextAction))
-    // {
-    //   UnPauseAnimation();
-    // }
-  }
 
   public void Attack()
   {
@@ -41,17 +36,45 @@ public abstract class CharacterAnimator : MonoBehaviour
   }
   public void MoveForward()
   {
-    characterMover.SetDestination(true, moveForwardTime);
+    bool isPlayerCharacter = this.GetType() == typeof(PlayerAnimator) ? true : false;
+
+    characterMover.SetDestination(isPlayerCharacter, true, moveForwardTime);
     animator.SetTrigger("moveForward");
   }
   public void MoveBackward()
   {
-    characterMover.SetDestination(false, moveBackwardTime);
+    bool isPlayerCharacter = this.GetType() == typeof(PlayerAnimator) ? true : false;
+
+    characterMover.SetDestination(isPlayerCharacter, false, moveBackwardTime);
     animator.SetTrigger("moveBackward");
   }
   public void Flinch()
   {
     animator.SetTrigger("flinch");
+  }
+
+  public void Evade()
+  {
+    bool isPlayerCharacter = this.GetType() == typeof(PlayerAnimator) ? true : false;
+
+    characterMover.SetDestination(isPlayerCharacter, false, evadeTime, true);
+    animator.SetTrigger("evade");
+  }
+
+  public void Counter()
+  {
+    bool isPlayerCharacter = this.GetType() == typeof(PlayerAnimator) ? true : false;
+
+    characterMover.SetDestination(isPlayerCharacter, true, counterTime, true);
+    animator.SetTrigger("counter");
+  }
+
+  public void DashAttack()
+  {
+    bool isPlayerCharacter = this.GetType() == typeof(PlayerAnimator) ? true : false;
+
+    characterMover.SetDestination(isPlayerCharacter, true, dashAttackTime);
+    animator.SetTrigger("dashAttack");
   }
 
   public void Idle()
@@ -87,6 +110,15 @@ public abstract class CharacterAnimator : MonoBehaviour
           break;
         case "MoveBackward":
           moveBackwardTime = clip.length;
+          break;
+        case "Evade":
+          evadeTime = clip.length;
+          break;
+        case "Counter":
+          counterTime = clip.length;
+          break;
+        case "DashAttack":
+          dashAttackTime = clip.length;
           break;
       }
     }

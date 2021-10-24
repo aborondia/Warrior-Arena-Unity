@@ -15,6 +15,7 @@ public class EnemyActionHandler : MonoBehaviour
     characterAnimator = GetComponent<CharacterAnimator>();
     animator = GetComponent<Animator>();
     actions = GetActions();
+    GetNextAction();
   }
 
   public Dictionary<ActionHandler.Action, List<string>> GetActions()
@@ -53,42 +54,27 @@ public class EnemyActionHandler : MonoBehaviour
     int defendChance = actions.Where(a => a.Key == ActionHandler.Action.Defend).Count() + specialChance;
     int actionCount = actions.Values.Sum(v => v.Count());
     int nextActionNumber = UnityEngine.Random.Range(0, actionCount);
-    ActionHandler.Action nextAction = ActionHandler.Action.None;
 
-    SayBattleQuote(nextAction);
 
     if (nextActionNumber <= attackChance)
     {
-      nextAction = ActionHandler.Action.Attack;
-      characterAnimator.NextAction = ActionHandler.Action.Attack;
+      characterAnimator.ChosenAction = ActionHandler.Action.Attack;
       return;
     }
 
     if (nextActionNumber <= specialChance)
     {
-      nextAction = ActionHandler.Action.Special;
-      characterAnimator.NextAction = ActionHandler.Action.Special;
+      characterAnimator.ChosenAction = ActionHandler.Action.Special;
       return;
     }
 
     if (nextActionNumber <= defendChance)
     {
-      nextAction = ActionHandler.Action.Defend;
-      characterAnimator.NextAction = ActionHandler.Action.Defend;
+      characterAnimator.ChosenAction = ActionHandler.Action.Defend;
       return;
     }
 
-    characterAnimator.NextAction = ActionHandler.Action.None;
-  }
-
-  public void ClearAction()
-  {
-    characterAnimator.NextAction = ActionHandler.Action.None;
-  }
-
-  public void StopDefending()
-  {
-    animator.SetBool("isDefending", false);
+    SayBattleQuote(characterAnimator.ChosenAction);
   }
 
   public void SayBattleQuote(ActionHandler.Action action)
